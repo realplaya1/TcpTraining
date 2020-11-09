@@ -7,10 +7,10 @@ namespace Client
     {
         static void Main(string[] args)
         {
-            Connect("127.0.0.1", "String message");
+            StartConnection("127.0.0.1");
         }
 
-        static void Connect(String server, String message)
+        static void StartConnection(String server)
         {
             try
             {
@@ -21,31 +21,36 @@ namespace Client
                 Int32 port = 13000;
                 TcpClient client = new TcpClient(server, port);
 
-                // Translate the passed message into ASCII and store it as a Byte array.
-                Byte[] data = System.Text.Encoding.ASCII.GetBytes(message);
+
 
                 // Get a client stream for reading and writing.
                 //  Stream stream = client.GetStream();
 
                 NetworkStream stream = client.GetStream();
+                var command = "";
+                while(command != "stop"){
+                    command = Console.ReadLine();
+                    // Translate the passed message into ASCII and store it as a Byte array.
+                    Byte[] data = System.Text.Encoding.ASCII.GetBytes(command);
+                    
+                    // Send the message to the connected TcpServer.
+                    stream.Write(data, 0, data.Length);
 
-                // Send the message to the connected TcpServer.
-                stream.Write(data, 0, data.Length);
+                    Console.WriteLine("Sent: {0}", command);
 
-                Console.WriteLine("Sent: {0}", message);
+                    // Receive the TcpServer.response.
 
-                // Receive the TcpServer.response.
+                    // Buffer to store the response bytes.
+                    data = new Byte[256];
 
-                // Buffer to store the response bytes.
-                data = new Byte[256];
+                    // String to store the response ASCII representation.
+                    String responseData = String.Empty;
 
-                // String to store the response ASCII representation.
-                String responseData = String.Empty;
-
-                // Read the first batch of the TcpServer response bytes.
-                Int32 bytes = stream.Read(data, 0, data.Length);
-                responseData = System.Text.Encoding.ASCII.GetString(data, 0, bytes);
-                Console.WriteLine("Received: {0}", responseData);
+                    // Read the first batch of the TcpServer response bytes.
+                    Int32 bytes = stream.Read(data, 0, data.Length);
+                    responseData = System.Text.Encoding.ASCII.GetString(data, 0, bytes);
+                    Console.WriteLine("Received: {0}", responseData);
+                }
 
                 // Close everything.
                 stream.Close();

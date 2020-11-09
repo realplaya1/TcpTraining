@@ -1,4 +1,5 @@
-﻿using System;
+﻿using System.Collections.Generic;
+using System;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
@@ -10,6 +11,8 @@ namespace Listener
         static void Main(string[] args)
         {
             TcpListener server = null;
+            Dictionary<int, TcpClient> clients = new Dictionary<int, TcpClient>();
+
             try
             {
                 // Set the TcpListener on port 13000.
@@ -35,6 +38,8 @@ namespace Listener
                     // You could also use server.AcceptSocket() here.
                     TcpClient client = server.AcceptTcpClient();
                     Console.WriteLine("Connected!");
+                    
+                    clients.Add(client.GetHashCode(), client);
 
                     Thread clientThread = new Thread(() => {
                         data = null;
