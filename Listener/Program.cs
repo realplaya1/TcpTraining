@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System.IO;
+using System.Net.Http;
+using System.Collections.Generic;
 using System;
 using System.Net;
 using System.Net.Sockets;
@@ -38,8 +40,6 @@ namespace Listener
                     // You could also use server.AcceptSocket() here.
                     TcpClient client = server.AcceptTcpClient();
                     Console.WriteLine("Connected!");
-                    
-                    clients.Add(client.GetHashCode().ToString(), client);
 
                     Thread clientThread = new Thread(() => {
                         data = null;
@@ -109,6 +109,16 @@ namespace Listener
 
             Console.WriteLine("\nHit enter to continue...");
             Console.Read();
+        }
+
+        public static void Foo()
+        {
+            Server server = new Server("127.0.0.1", 13000);
+            server.StartAcceptingConnections();
+            server.OnClientConnected += (sender, client) => 
+            {
+                
+            };
         }
     }
 }
