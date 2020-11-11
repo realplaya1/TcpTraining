@@ -11,7 +11,7 @@ namespace Listener
         static void Main(string[] args)
         {
             TcpListener server = null;
-            Dictionary<int, TcpClient> clients = new Dictionary<int, TcpClient>();
+            Dictionary<string, TcpClient> clients = new Dictionary<string, TcpClient>();
 
             try
             {
@@ -39,7 +39,7 @@ namespace Listener
                     TcpClient client = server.AcceptTcpClient();
                     Console.WriteLine("Connected!");
                     
-                    clients.Add(client.GetHashCode(), client);
+                    clients.Add(client.GetHashCode().ToString(), client);
 
                     Thread clientThread = new Thread(() => {
                         data = null;
