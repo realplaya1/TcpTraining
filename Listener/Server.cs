@@ -22,7 +22,8 @@ namespace Listener
         {
             _server.Start();
 
-            Thread thread = new Thread(() => {
+            Thread thread = new Thread(() => 
+            {
                 // Enter the listening loop.
                 while (true)
                 {
@@ -34,7 +35,6 @@ namespace Listener
         private void ListenForConnections()
         {
             Console.Write("Waiting for a connection... ");
-
             TcpClient client = _server.AcceptTcpClient();
             OnClientConnected?.Invoke(this, client);
         }

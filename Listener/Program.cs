@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Net.NetworkInformation;
+using System.IO;
 using System.Net.Http;
 using System.Collections.Generic;
 using System;
@@ -117,7 +118,8 @@ namespace Listener
             server.StartAcceptingConnections();
             server.OnClientConnected += (sender, client) => 
             {
-                
+                var connectedClient = new ConnectedClient(client);
+                connectedClient.StartClient();
             };
         }
     }
