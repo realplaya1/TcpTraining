@@ -114,13 +114,32 @@ namespace Listener
 
         public static void Foo()
         {
+            Bus bus = new Bus();
             Server server = new Server("127.0.0.1", 13000);
             server.StartAcceptingConnections();
             server.OnClientConnected += (sender, client) => 
             {
-                var connectedClient = new ConnectedClient(client);
+                var connectedClient = new ConnectedClient(client, bus);
                 connectedClient.StartClient();
             };
+        }
+    }
+
+    public class Bus
+    {
+        Dictionary<string, TcpClient> _clientDictionary = new Dictionary<string, TcpClient>();
+
+        public void AddAnonymousClient(TcpClient client)
+        {
+            _clientDictionary.Add(client.GetHashCode().ToString(), client);
+        }
+
+        public void SendMessage(string message)
+        {
+            var composedMessage = message.Split('\n');
+            if(composedMessage[0].StartsWith("ToUser:"))
+            {
+            }
         }
     }
 }

@@ -8,7 +8,9 @@ namespace Listener
     {
         TcpClient _tcpClient;
         Thread _thr;
-        public ConnectedClient(TcpClient tcpClient)
+        Bus _bus;
+
+        public ConnectedClient(TcpClient tcpClient, Bus bus)
         {
             _tcpClient = tcpClient;
         }
@@ -30,6 +32,7 @@ namespace Listener
                     Console.WriteLine("Received: {0}", data);
 
                     // need to use bus here
+                    _bus.SendMessage(data);
 
                     // Send back a response.
                     byte[] msg = System.Text.Encoding.ASCII.GetBytes(data);
