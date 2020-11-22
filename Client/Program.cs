@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net.Sockets;
+using ClientClassNamespace;
 
 namespace Client
 {
@@ -7,13 +8,17 @@ namespace Client
     {
         static void Main(string[] args)
         {
-            Connect("127.0.0.1", "String message");
+           // Connect("127.0.0.1", "String message");
+
+            ClientClass client = new ClientClass("127.0.0.1", 13000);
+            client.Connect();
+            client.SendMessage("message to server");
         }
 
         // Functions:
         // Connect
         // SendMessage
-        // startlistenning
+        // (private) startlistenning
         // +OnMessageReceived
         // StopListening
         // Disconnet
@@ -37,7 +42,6 @@ namespace Client
 
                 NetworkStream stream = client.GetStream();
                 #endregion Connect
-
                 // Translate the passed message into ASCII and store it as a Byte array.
                 Byte[] data = System.Text.Encoding.ASCII.GetBytes(message);
 
