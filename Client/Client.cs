@@ -15,6 +15,8 @@ namespace ClientClassNamespace
 
         private Thread _listeningThread;
 
+        private bool _isListening;
+
         public void Connect()
         {
             Int32 port = 13000;
@@ -30,9 +32,11 @@ namespace ClientClassNamespace
 
         private void StartListenning()
         {
-            _listeningThread = new Thread() =>
+            _isListening = true;
+
+            _listeningThread = new Thread(() =>
             {
-                while (true)
+                while (_isListening)
                 {
                     byte[] data = new byte[256];
                     Int32 bytes = _stream.Read(data, 0, data.Length);
@@ -40,7 +44,14 @@ namespace ClientClassNamespace
                     OnMessageReceived?.Invoke(message); 
                 }
                 
-            };
+            });
+
+            _listeningThread.Start();
+        }
+
+        private void StopListen()
+        {
+            _isListening = false;
         }
     }
 }
