@@ -1,3 +1,6 @@
+using System.IO;
+using System.Data;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Common;
 using System.Security.AccessControl;
 using System;
@@ -29,7 +32,10 @@ namespace ClientClassNamespace
         {
             _listeningThread = new Thread() =>
             {
-                
+                byte[] data = new byte[256];
+                Int32 bytes = _stream.Read(data, 0, data.Length);
+                string message = System.Text.Encoding.ASCII.GetString(data, 0, bytes);
+                OnMessageReceived?.Invoke(message);
             };
         }
     }
