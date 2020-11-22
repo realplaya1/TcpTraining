@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Internal;
+using System;
 using System.Net.Sockets;
 using ClientClassNamespace;
 
@@ -12,6 +13,10 @@ namespace Client
 
             ClientClass client = new ClientClass("127.0.0.1", 13000);
             client.Connect();
+            client.OnMessageReceived += (message) =>
+            {
+                Console.WriteLine($"Message received: {message}");
+            };
             client.SendMessage("message to server");
         }
 
