@@ -1,5 +1,5 @@
-﻿using Internal;
-using System;
+﻿using System;
+using Internal;
 using System.Net.Sockets;
 using ClientClassNamespace;
 
@@ -17,15 +17,21 @@ namespace Client
             {
                 Console.WriteLine($"Message received: {message}");
             };
+            
+
+            client.Connect();
+
             client.SendMessage("message to server");
+
+            client.Disconnect();
         }
 
         // Functions:
-        // Connect
-        // SendMessage
-        // (private) startlistenning
-        // +OnMessageReceived
-        // StopListening
+        // Connect v
+        // SendMessage v
+        // (private) startlistenning v
+        // +OnMessageReceived v
+        // (private) StopListening v
         // Disconnet
 
         static void Connect(String server, String message)

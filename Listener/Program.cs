@@ -9,19 +9,9 @@ namespace Listener
     {
         static void Main(string[] args)
         {
-            TcpListener server = null;
+            
             try
             {
-                // Set the TcpListener on port 13000.
-                int port = 13000;
-                IPAddress localAddr = IPAddress.Parse("127.0.0.1");
-
-                // TcpListener server = new TcpListener(port);
-                server = new TcpListener(localAddr, port);
-
-                // Start listening for client requests.
-                server.Start();
-
                 // Buffer for reading data
                 Byte[] bytes = new Byte[256];
                 String data = null;

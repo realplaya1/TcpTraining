@@ -1,3 +1,5 @@
+using System.Net.Http;
+using System.IO.Enumeration;
 using System.IO;
 using System.Data;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -5,6 +7,7 @@ using System.Data.Common;
 using System.Security.AccessControl;
 using System;
 using System.Net.Sockets;
+using System.Threading;
 
 namespace ClientClassNamespace
 {
@@ -17,10 +20,12 @@ namespace ClientClassNamespace
 
         private bool _isListening;
 
+        private TcpClient _client;
+
         public void Connect()
         {
             Int32 port = 13000;
-            TcpClient client = new TcpClient(server, port);
+            _client = new TcpClient(server, port);
             NetworkStream stream = client.GetStream();
         }
 
@@ -52,6 +57,14 @@ namespace ClientClassNamespace
         private void StopListen()
         {
             _isListening = false;
+        }
+
+        public void Disconnect()
+        {
+            StopListen();
+            _listeningThread.Abort();
+            _stream.Dispose();
+            _client.Close();
         }
     }
 }
