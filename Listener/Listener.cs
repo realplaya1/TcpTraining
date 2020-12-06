@@ -18,7 +18,10 @@ namespace ListenerNamespace
 
         private void StartWaitingForConnections()
         {
-
+            while (true)
+            {
+                TcpClient client = server.AcceptTcpClient();
+            }
         }
     }
 }

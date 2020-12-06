@@ -23,7 +23,7 @@ namespace Listener
 
                     // Perform a blocking call to accept requests.
                     // You could also use server.AcceptSocket() here.
-                    TcpClient client = server.AcceptTcpClient();
+                    
                     Console.WriteLine("Connected!");
 
                     Thread clientThread = new Thread(() => {
