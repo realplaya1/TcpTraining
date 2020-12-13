@@ -20,7 +20,7 @@ namespace ListenerNamespace
         {
             while (true)
             {
-                TcpClient client = server.AcceptTcpClient();
+                TcpClient client = _server.AcceptTcpClient();
             }
         }
     }

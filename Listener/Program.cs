@@ -2,27 +2,42 @@
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
-using ClientClass;
+using ClientClassNamespace;
 
-namespace Listener
+namespace ListenerNamespace
 {
     class Program
     {
+        // Listener Functions:
+        // Start()
+        // (priv) StartWaitingForConnections()
+        // (priv) AddNewConnection()
+        // (priv) StopWaitingForConnections()
+        // Stop()
         static void Main()
         {
             Listener listener = new Listener();
             listener.Start();
         }
-        static void Main(string[] args)
-        {
-            
 
+        static void LastMain(string[] args)
+        {
+            #region class Listener part 1
+            #region class Listener Start()
+            TcpListener server = null;
             try
             {
-                // Buffer for reading data
-                Byte[] bytes = new Byte[256];
-                String data = null;
+                // Set the TcpListener on port 13000.
+                int port = 13000;
+                IPAddress localAddr = IPAddress.Parse("127.0.0.1");
 
+                // TcpListener server = new TcpListener(port);
+                server = new TcpListener(localAddr, port);
+
+                // Start listening for client requests.
+                server.Start();
+                #endregion class Listener Start()
+                #region class Listener StartWaitingForConnections()
                 // Enter the listening loop.
                 while (true)
                 {
@@ -32,12 +47,18 @@ namespace Listener
                     // You could also use server.AcceptSocket() here.
                     
                     Console.WriteLine("Connected!");
-                    #region user
-
-                    ClientClass client = new ClientClass("127.0.0.1", 13000);
+                    #endregion class Listener StartWaitingForConnections()
+                    #endregion class Listener part 1                    
+                    
+                    #region class User
+                    TcpClient client = server.AcceptTcpClient();
+                    ClientClass user = new ClientClass("127.0.0.1", 13000);
+                    user.Connect();
 
                     Thread clientThread = new Thread(() => {
-                        data = null;
+                        // Buffer for reading data
+                        Byte[] bytes = new Byte[256];
+                        String data = null;
 
                         // Get a stream object for reading and writing
                         NetworkStream stream = client.GetStream();
@@ -77,7 +98,7 @@ namespace Listener
                                     Console.WriteLine($"Symbol: {data} received but no reaction found");
                                     break;
                             }
-                            #endregion
+
                             byte[] msg = System.Text.Encoding.ASCII.GetBytes(data);
 
                             // Send back a response.
@@ -90,6 +111,8 @@ namespace Listener
                     });
 
                     clientThread.Start();
+                    #endregion class User
+                    #region class Listener part 2
                 }
             }
             catch (SocketException e)
@@ -102,9 +125,9 @@ namespace Listener
                 server.Stop();
             }
 
+            #endregion class Listener part 2
             Console.WriteLine("\nHit enter to continue...");
             Console.Read();
         }
     }
 }
-
