@@ -16,23 +16,32 @@ namespace ClientClassNamespace
         private string _serverAddres;
         private int _port;
 
+        NetworkStream _stream;
+
         private Thread _listeningThread;
 
         private bool _isListening;
 
         private TcpClient _client;
 
+        public ClientClass(string serverAddress, int port)
+        {
+            _port = port;
+            _serverAddres = serverAddress;
+        }
+
         public void Connect()
         {
             Int32 port = 13000;
-            _client = new TcpClient(server, port);
-            NetworkStream stream = client.GetStream();
+            _client = new TcpClient(_serverAddres, port);
+            _stream = _client.GetStream();
         }
+        public event Action<string> OnMessageReceived;
 
-        public void SendMessage()
+        public void SendMessage(string message)
         {
             Byte[] data = System.Text.Encoding.ASCII.GetBytes(message);
-            _stream.Write(data, 0, DataAdapter.Length);
+            _stream.Write(data, 0, data.Length);
         }
 
         private void StartListenning()

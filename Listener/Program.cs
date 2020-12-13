@@ -2,14 +2,21 @@
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
+using ClientClass;
 
 namespace Listener
 {
     class Program
     {
+        static void Main()
+        {
+            Listener listener = new Listener();
+            listener.Start();
+        }
         static void Main(string[] args)
         {
             
+
             try
             {
                 // Buffer for reading data
@@ -25,6 +32,9 @@ namespace Listener
                     // You could also use server.AcceptSocket() here.
                     
                     Console.WriteLine("Connected!");
+                    #region user
+
+                    ClientClass client = new ClientClass("127.0.0.1", 13000);
 
                     Thread clientThread = new Thread(() => {
                         data = null;
@@ -67,7 +77,7 @@ namespace Listener
                                     Console.WriteLine($"Symbol: {data} received but no reaction found");
                                     break;
                             }
-
+                            #endregion
                             byte[] msg = System.Text.Encoding.ASCII.GetBytes(data);
 
                             // Send back a response.
